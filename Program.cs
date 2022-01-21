@@ -10,7 +10,7 @@ namespace EmployeeWageAssignment
         private const int NumOfWorkingDays = 20;
         private const int MaxHrsInMonth = 100;
         private static Random s_random = new Random();
-        static void Main(string[] args)
+        public static int ComputeEmpWage()
         {
             int totalEmpHrs = 0, totalWorkingDays = 0;
             while (totalEmpHrs <= MaxHrsInMonth && totalWorkingDays < NumOfWorkingDays)
@@ -35,6 +35,11 @@ namespace EmployeeWageAssignment
             }
             int totalEmpWage = totalEmpHrs * EmpRatePerHour;
             Console.WriteLine($"Total Emp Wage: {totalEmpWage}");
+            return totalEmpWage;
+        }
+        static void Main(string[] args)
+        {
+            ComputeEmpWage();
         }
     }
 }
