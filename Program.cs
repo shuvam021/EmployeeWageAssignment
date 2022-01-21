@@ -8,14 +8,16 @@ namespace EmployeeWageAssignment
         private const int IsFullTime = 2;
         private const int EmpRatePerHour = 20;
         private const int NumOfWorkingDays = 20;
+        private const int MaxHrsInMonth = 100;
         private static Random s_random = new Random();
         static void Main(string[] args)
         {
-             int totalEmpWage = 0;
-            for (int day = 0; day < NumOfWorkingDays; day++)
+            int totalEmpHrs = 0, totalWorkingDays = 0;
+            while (totalEmpHrs <= MaxHrsInMonth && totalWorkingDays < NumOfWorkingDays)
             {
-                int empWage = 0, empHrs = 0;
+                totalWorkingDays++;
                 int empCheck = s_random.Next(0, 3);
+                int empHrs = 0;
                 switch (empCheck)
                 {
                     case IsPartTime:
@@ -28,10 +30,10 @@ namespace EmployeeWageAssignment
                         empHrs = 0;
                         break;
                 }
-                empWage = empHrs * EmpRatePerHour;
-                totalEmpWage += empWage;
-                Console.WriteLine($"Emp Wage: {empWage}");
+                totalEmpHrs += empHrs;
+                Console.WriteLine($"Days: {totalWorkingDays} Emp Hrs: {empHrs}");
             }
+            int totalEmpWage = totalEmpHrs * EmpRatePerHour;
             Console.WriteLine($"Total Emp Wage: {totalEmpWage}");
         }
     }
