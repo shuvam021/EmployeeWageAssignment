@@ -7,26 +7,32 @@ namespace EmployeeWageAssignment
         private const int IsPartTime = 1;
         private const int IsFullTime = 2;
         private const int EmpRatePerHour = 20;
-        private static int _empHrs = 0;
-        private static int _empWage = 0;
+        private const int NumOfWorkingDays = 20;
         private static Random s_random = new Random();
         static void Main(string[] args)
         {
-            int empCheck = s_random.Next(0, 3);
-            switch (empCheck)
+             int totalEmpWage = 0;
+            for (int day = 0; day < NumOfWorkingDays; day++)
             {
-                case IsPartTime:
-                    _empHrs = 4;
-                    break;
-                case IsFullTime:
-                    _empHrs = 8;
-                    break;
-                default:
-                    _empHrs = 0;
-                    break;
+                int empWage = 0, empHrs = 0;
+                int empCheck = s_random.Next(0, 3);
+                switch (empCheck)
+                {
+                    case IsPartTime:
+                        empHrs = 4;
+                        break;
+                    case IsFullTime:
+                        empHrs = 8;
+                        break;
+                    default:
+                        empHrs = 0;
+                        break;
+                }
+                empWage = empHrs * EmpRatePerHour;
+                totalEmpWage += empWage;
+                Console.WriteLine($"Emp Wage: {empWage}");
             }
-            _empWage = _empHrs * EmpRatePerHour;
-            Console.WriteLine($"Emp Wage: {_empWage}");
+            Console.WriteLine($"Total Emp Wage: {totalEmpWage}");
         }
     }
 }
