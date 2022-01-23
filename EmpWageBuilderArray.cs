@@ -4,18 +4,27 @@ using System.Text;
 
 namespace EmployeeWageAssignment
 {
+    public interface IComputeEmpWage
+    {
+        public void AddCompanyEmpWage(string company, int empRatePerHour, int numOfWorkingDays, int maxHrsPerMonth);
+        public void ComputeEmpWage();
+        public int GetTotalWage(string company);
+    }
+
     internal class CompanyEmpWage {
         public string company;
         public int empRatePerHour;
         public int numOfWorkingDays;
         public int maxHrsPerMonth;
         public int totalEmpWage;
+
         public CompanyEmpWage(string company, int empRatePerHour, int numOfWorkingDays, int maxHrsPerMonth)
         {
             this.company = company;
             this.empRatePerHour = empRatePerHour;
             this.numOfWorkingDays = numOfWorkingDays;
             this.maxHrsPerMonth = maxHrsPerMonth;
+            this.totalEmpWage = 0;
         }
         public void SetTotalEmpWage(int totalEmpWage)
         {
@@ -26,33 +35,39 @@ namespace EmployeeWageAssignment
             return $"Total Emp wage for Company: {this.company} is: {this.totalEmpWage}";
         }
     }
-    internal class EmpWageBuilderArray
+
+    internal class EmpWageBuilder: IComputeEmpWage
     {
         public const int Is_Part_Time = 1;
         public const int Is_Full_Time = 2;
-        private int _numOfCompany = 0;
-        private CompanyEmpWage[] _companyEmpWageArray;
-        public EmpWageBuilderArray()
+
+        //private int _numOfCompany = 0;
+        //private CompanyEmpWage[] _companyEmpWageArray;
+
+        private LinkedList<CompanyEmpWage> _companyEmpWageList;
+        private Dictionary<string, CompanyEmpWage> _companyToEmpWageMap;
+
+        public EmpWageBuilder()
         {
-            this._companyEmpWageArray = new CompanyEmpWage[5];
+            this._companyEmpWageList = new LinkedList<CompanyEmpWage>();
+            this._companyToEmpWageMap = new Dictionary<string, CompanyEmpWage>();
         }
-        //public override string ToString()
-        //{
-        //    return $"Total Emp Wage for company: {this._company} is {_totalEmpWage}";
-        //}
 
         public void AddCompanyEmpWage(string company, int empRatePerHour, int numOfWorkingDays, int maxHrsPerMonth)
         {
-            _companyEmpWageArray[this._numOfCompany] = new CompanyEmpWage(company, empRatePerHour, numOfWorkingDays, maxHrsPerMonth);
-            _numOfCompany++;
+            CompanyEmpWage companyEmpWage = new CompanyEmpWage(
+                company, empRatePerHour, numOfWorkingDays, maxHrsPerMonth);
+            this._companyEmpWageList.AddLast(companyEmpWage);
+            this._companyToEmpWageMap.Add(company, companyEmpWage);
         }
 
         public void ComputeEmpWage()
         {
-            for (int i = 0; i< _numOfCompany; i++)
+
+            foreach (CompanyEmpWage companyEmpWage in this._companyEmpWageList)
             {
-                this._companyEmpWageArray[i].SetTotalEmpWage(this.ComputeEmpWage(this._companyEmpWageArray[i]));
-                Console.WriteLine(this._companyEmpWageArray[i]);
+                companyEmpWage.SetTotalEmpWage(this.ComputeEmpWage(companyEmpWage));
+                Console.WriteLine(companyEmpWage);
             }
         }
         private int ComputeEmpWage(CompanyEmpWage companyEmpWage)
@@ -80,6 +95,11 @@ namespace EmployeeWageAssignment
                 Console.WriteLine($"Day#: {totalWorkingDays}, Emp Hrs: {empHrs}");
             }
             return totalEmpHrs * companyEmpWage.empRatePerHour;
+        }
+
+        public int GetTotalWage(string company)
+        {
+            return this._companyToEmpWageMap[company].totalEmpWage;
         }
     }
 }
