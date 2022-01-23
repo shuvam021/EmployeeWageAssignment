@@ -6,12 +6,10 @@ namespace EmployeeWageAssignment
     {
         static void Main(string[] args)
         {
-            EmpWageBuilderObject dMart = new EmpWageBuilderObject("DMart", 20, 2, 10);
-            EmpWageBuilderObject reliance = new EmpWageBuilderObject("Reliance", 10, 4, 20);
-            dMart.ComputeEmpWage();
-            Console.WriteLine(dMart);
-            reliance.ComputeEmpWage();
-            Console.WriteLine(reliance);
+            EmpWageBuilderArray empWageBuilder = new EmpWageBuilderArray();
+            empWageBuilder.AddCompanyEmpWage("DMart", 20, 2, 10);
+            empWageBuilder.AddCompanyEmpWage("Reliance", 10, 4, 20);
+            empWageBuilder.ComputeEmpWage();
         }
     }
 }
